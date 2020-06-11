@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "694692088545",
+    "firebase_url": "https://telenotification-a48ca.firebaseio.com",
+    "project_id": "telenotification-a48ca",
+    "storage_bucket": "telenotification-a48ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694692088545:android:34ee7fcbc40fe2e1b945a0",
+        "android_client_info": {
+          "package_name": "com.telespecialists.telecare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694692088545-jtg1m2kagc79b2lmpmhdirl5v2e72t9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNszjPXyg5PVqBFdPD-BigD1fSnAeoCbE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694692088545-jtg1m2kagc79b2lmpmhdirl5v2e72t9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

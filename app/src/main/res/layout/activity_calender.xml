@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:agendaCalendar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.CalenderActivity">
+
+    <!--<com.ognev.kotlin.agendacalendarview.AgendaCalendarView
+        android:id="@+id/agenda_calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        agendaCalendar:calendarCurrentDayTextColor="@color/colorPrimary"
+        agendaCalendar:calendarSelectedDayTextColor="@color/white"
+        agendaCalendar:calendarMonthTextColor="@android:color/black"
+        agendaCalendar:calendarHeaderColor="@color/colorPrimary"
+        agendaCalendar:circleBackgroundColor="@color/yellow"
+        agendaCalendar:calendarPastDayTextColor="@android:color/darker_gray"
+        agendaCalendar:cellPastBackgroundColor="@color/calendar_past_days_bg"
+        agendaCalendar:cellNowadaysDayColor="@color/white"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp" />-->
+
+</RelativeLayout>
