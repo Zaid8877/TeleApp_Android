@@ -21,57 +21,132 @@ class MainActivity : AppCompatActivity() {
         }
 
         home.setOnClickListener {
-            home.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
-            egg.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            emergent.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            sc.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            routine.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
+            home.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            egg.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            emergent.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            sc.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            routine.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
             replaceFragment(HomeFragment())
         }
         egg.setOnClickListener {
-            home.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            egg.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
-            emergent.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            sc.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            routine.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
+            home.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            egg.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            emergent.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            sc.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            routine.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
             replaceFragment(EGGFragment())
         }
         emergent.setOnClickListener {
-            home.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            egg.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            emergent.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
-            sc.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            routine.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
+            home.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            egg.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            emergent.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            sc.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            routine.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
             replaceFragment(EmergentFragment())
         }
         sc.setOnClickListener {
-            home.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            egg.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            emergent.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            sc.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
-            routine.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
+            home.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            egg.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            emergent.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            sc.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            routine.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
             replaceFragment(ScheduleFragment())
 
         }
         routine.setOnClickListener {
-            home.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            egg.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            emergent.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            sc.setColorFilter(ContextCompat.getColor(this, R.color.colorGray), android.graphics.PorterDuff.Mode.MULTIPLY);
-            routine.setColorFilter(ContextCompat.getColor(this, R.color.colorPrimaryDark), android.graphics.PorterDuff.Mode.MULTIPLY);
+            home.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            egg.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            emergent.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            sc.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorGray),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
+            routine.setColorFilter(
+                ContextCompat.getColor(this, R.color.colorPrimaryDark),
+                android.graphics.PorterDuff.Mode.MULTIPLY
+            );
             replaceFragment(RoutineFragment())
         }
 
     }
 
-    private fun addFragment(fragment: Fragment){
+    private fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .add(R.id.fragment_container, fragment)
             .commit()
     }
 
-    fun replaceFragment(fragment: Fragment){
+    fun replaceFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)

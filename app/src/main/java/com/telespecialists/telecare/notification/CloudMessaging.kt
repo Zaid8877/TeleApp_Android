@@ -12,9 +12,9 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import com.telespecialists.telecare.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.telespecialists.telecare.R
 import java.util.*
 
 
@@ -80,6 +80,6 @@ class CloudMessaging : FirebaseMessagingService() {
 
     override fun onNewToken(s: String) {
         super.onNewToken(s)
-        Log.e("token", s)
+        Log.e("firebase_token", s)
     }
 }

@@ -8,19 +8,19 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.pixplicity.easyprefs.library.Prefs
 import com.telespecialists.telecare.R
 import com.telespecialists.telecare.data.Login
 import com.telespecialists.telecare.data.TokenX
-import com.telespecialists.telecare.retro.RetrofitClient
-import com.telespecialists.telecare.retro.RetrofitServices
+import com.telespecialists.telecare.retro.RetroClient
+import com.telespecialists.telecare.retro.RetroServices
 import com.telespecialists.telecare.utils.Constants
-import com.pixplicity.easyprefs.library.Prefs
 import kotlinx.android.synthetic.main.activity_login.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import org.json.JSONObject
 
 
 class LoginActivity : AppCompatActivity() {
@@ -30,11 +30,11 @@ class LoginActivity : AppCompatActivity() {
     private var progressDialog: ProgressDialog? = null
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //val id = "df79577f-3d6c-40f2-a752-85dc1ce21ca1"
         val id = Prefs.getString(Constants.ID, "0")
-        if (id != "0"){
+        if (id != "0") {
             try {
                 val i = Intent(this, MainActivity::class.java)
                 startActivity(i)
@@ -46,8 +46,6 @@ class LoginActivity : AppCompatActivity() {
         initStatusBar()
         progressDialog()
     }
-
-
 
 
     private fun initStatusBar() {
@@ -71,59 +69,113 @@ class LoginActivity : AppCompatActivity() {
                 userPassword.error = "Enter email address!"
             }
             else -> {
-                try {
-                    progressDialog!!.show()
-                    generateToken()
-                } catch (e: Exception) {
-                }
+                generateTokenxVolley()
             }
         }
     }
 
-    private fun progressDialog() {
-        try {
-            progressDialog = ProgressDialog(this)
-            progressDialog!!.setMessage("Authenticating...")
-            progressDialog!!.setCanceledOnTouchOutside(false)
-        } catch (e: Exception) {
+    private fun generateTokenxVolley() {
+        val myRequestQueue = Volley.newRequestQueue(this)
+        val url = "http://uat.strokealert911.com/api/token"
+
+        val myStringRequest = object :
+            StringRequest(Method.POST, url,
+                Response.Listener { response ->
+
+                    val obj = JSONObject(response)
+                    val token = obj.getString("access_token")
+                    Log.e("token", token)
+                    postDataVolley(token)
+                }, Response.ErrorListener
+                { error ->
+                    Log.e("error", error.toString())
+                }) {
+            override fun getParams(): Map<String, String> {
+                val MyData: MutableMap<String, String> =
+                    HashMap()
+                MyData["username"] = Constants.USER_NAME
+                MyData["password"] = Constants.USER_PASSWORD
+                MyData["grant_type"] = Constants.GRANT_TYPE
+                return MyData
+            }
         }
+
+
+        myRequestQueue.add(myStringRequest)
     }
 
-    private fun generateToken() {
-        val map: HashMap<String?, Any?> = HashMap()
-        map["username"] = Constants.USER_NAME
-        map["password"] = Constants.USER_PASSWORD
-        map["grant_type"] = Constants.GRANT_TYPE
+    private fun postDataVolley(token: String) {
+        val myRequestQueue = Volley.newRequestQueue(this)
+        val url = "http://uat.strokealert911.com/api/physician/Auth"
 
-        Log.e("data", map.toString())
+        val myStringRequest = object :
+            StringRequest(Method.POST, url,
+                Response.Listener { response ->
+                    Log.e("error", response.toString())
 
-        val service: RetrofitServices = RetrofitClient.createServiceToken(RetrofitServices::class.java)
+                }, Response.ErrorListener
+                { error ->
+                    Log.e("error", "" + error.toString())
+                }) {
+            override fun getParams(): Map<String, String> {
+                val MyData: MutableMap<String, String> =
+                    HashMap()
+                MyData["user_name"] = email!!
+                MyData["password"] = password!!
+                return MyData
+            }
+
+            override fun getHeaders(): MutableMap<String, String> {
+                val params: MutableMap<String, String> =
+                    HashMap()
+                params["Authorization"] = "bearer $token"
+                return params
+            }
+        }
+
+
+        myRequestQueue.add(myStringRequest)
+
+    }
+
+    private fun generateTokenxRetrofit() {
+        val map: HashMap<String, Any> = HashMap()
+        map["username"] = "telecare-api-001"
+        map["password"] = "dGVsZWNhcmUtYXBpLTAwMTpOYXRpb25hbCQwOnZjYTZ0MXkhdzdeZW4wdTg0eDNt"
+        map["grant_type"] = "password"
+        Log.e("map", map.toString())
+        val service: RetroServices =
+            RetroClient.createService(RetroServices::class.java)
+
         val call = service.getToken(map)
-        call.enqueue(object : Callback<TokenX> {
+        call.enqueue(object : retrofit2.Callback<TokenX> {
             override fun onResponse(
-                call: Call<TokenX>,
-                response: Response<TokenX>
+                call: retrofit2.Call<TokenX>,
+                response: retrofit2.Response<TokenX>
             ) {
                 if (response.isSuccessful) {
                     try {
                         val token = response.body()!!.accessToken
                         if (token.isNotEmpty()) {
-                            Log.e("token: ", token)
                             Prefs.putString(Constants.SAVED_TOKEN, token)
-                            Log.e("token", Prefs.getString(Constants.SAVED_TOKEN, ""))
-
                             postData()
                         }
                     } catch (e: Exception) {
                     }
                 } else {
-                    Log.e("token: ", "token failed")
+                    try {
+                        Log.e("token: ", "token failed")
+                    } catch (e: Exception) {
+                    }
 
                 }
             }
 
-            override fun onFailure(call: Call<TokenX>, t: Throwable) {
-                Log.e("token: ", "token failed: "+t.message)
+            override fun onFailure(call: retrofit2.Call<TokenX>, t: Throwable) {
+                try {
+                    Log.e("token: ", "token failed: " + t.message)
+                } catch (e: Exception) {
+                }
 
 
             }
@@ -131,46 +183,35 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun postData() {
-        val map: HashMap<String?, Any?> = HashMap()
-        map["user_name"] = email
-        map["password"] = password
+        val map: HashMap<String, Any> = HashMap()
+        map["user_name"] = email!!
+        map["password"] = password!!
+        val service: RetroServices =
+            RetroClient.createServiceWithToken(RetroServices::class.java)
 
-        Log.e("data", map.toString())
-        val service: RetrofitServices = RetrofitClient.createServiceWithToken(RetrofitServices::class.java)
         val call = service.login(map)
-        call.enqueue(object : Callback<Login> {
+        call.enqueue(object : retrofit2.Callback<Login> {
             override fun onResponse(
-                call: Call<Login>,
-                response: Response<Login>
+                call: retrofit2.Call<Login>,
+                response: retrofit2.Response<Login>
             ) {
                 if (response.isSuccessful) {
                     try {
-                        progressDialog!!.dismiss()
-                        if (response.body() != null){
-                            val id = response.body()!!.id
-                            val nPINumber = response.body()!!.nPINumber
-                            saveData(id, nPINumber)
-                        }
+                        Log.e("data", response.toString())
+                    } catch (e: Exception) {
+                    }
+                } else {
+                    try {
+                        Log.e("token: ", "token failed")
                     } catch (e: Exception) {
                     }
 
-                } else {
-                    try {
-                        progressDialog!!.dismiss()
-                        Toast.makeText(this@LoginActivity, "Unable to login", Toast.LENGTH_LONG).show()
-                    } catch (e: Exception) {
-                    }
                 }
             }
 
-            override fun onFailure(call: Call<Login>, t: Throwable) {
+            override fun onFailure(call: retrofit2.Call<Login>, t: Throwable) {
                 try {
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Unable to login ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    progressDialog!!.dismiss()
+                    Log.e("token: ", "token failed: " + t.message)
                 } catch (e: Exception) {
                 }
 
@@ -179,13 +220,12 @@ class LoginActivity : AppCompatActivity() {
         })
     }
 
-    private fun saveData(id: String?, nPINumber: String?) {
+
+    private fun progressDialog() {
         try {
-            Prefs.putString(Constants.ID, id)
-            Prefs.putString(Constants.NPI_NUMBER, nPINumber)
-            val i = Intent(this, MainActivity::class.java)
-            startActivity(i)
-            finish()
+            progressDialog = ProgressDialog(this)
+            progressDialog!!.setMessage("Authenticating...")
+            progressDialog!!.setCanceledOnTouchOutside(false)
         } catch (e: Exception) {
         }
     }

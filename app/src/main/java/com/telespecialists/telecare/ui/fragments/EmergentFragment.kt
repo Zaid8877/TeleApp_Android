@@ -3,7 +3,6 @@ package com.telespecialists.telecare.ui.fragments
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,19 +11,19 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-
+import com.pixplicity.easyprefs.library.Prefs
 import com.telespecialists.telecare.R
 import com.telespecialists.telecare.adapter.CasesAdapter
+import com.telespecialists.telecare.data.Case
 import com.telespecialists.telecare.data.Cases
 import com.telespecialists.telecare.data.TokenX
+import com.telespecialists.telecare.retro.RetroServices
 import com.telespecialists.telecare.retro.RetrofitClient
-import com.telespecialists.telecare.retro.RetrofitServices
 import com.telespecialists.telecare.utils.Constants
-import com.pixplicity.easyprefs.library.Prefs
-import com.telespecialists.telecare.data.Case
 import kotlinx.android.synthetic.main.fragment_layout.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -128,14 +127,15 @@ class EmergentFragment : Fragment() {
     }
 
     private fun generateToken() {
-        val map: HashMap<String?, Any?> = HashMap()
-        map["username"] = Constants.USER_NAME
-        map["password"] = Constants.USER_PASSWORD
-        map["grant_type"] = Constants.GRANT_TYPE
+        val map: HashMap<String, Any> = HashMap()
+        map["username"] = "telecare-api-001"
+        map["password"] = "dGVsZWNhcmUtYXBpLTAwMTpOYXRpb25hbCQwOnZjYTZ0MXkhdzdeZW4wdTg0eDNt"
+        map["grant_type"] = "password"
 
-        val service: RetrofitServices =
-            RetrofitClient.createServiceToken(RetrofitServices::class.java)
-        val call = service.getToken(map)
+
+        val apiService = RetrofitClient.getClientRetro().create(RetroServices::class.java)
+
+        val call = apiService.getToken(map)
         call.enqueue(object : Callback<TokenX> {
             override fun onResponse(
                 call: Call<TokenX>,
@@ -145,16 +145,8 @@ class EmergentFragment : Fragment() {
                     try {
                         val token = response.body()!!.accessToken
                         if (token.isNotEmpty()) {
-                            Prefs.putString(Constants.SAVED_TOKEN, token)
-                            Log.e(
-                                "token: ",
-                                Prefs.getString(
-                                    Constants.SAVED_TOKEN,
-                                    ""
-                                )
-                            )
-
-                            getData()
+                            //Prefs.putString("bearer_token", token)
+                            getData(token)
                         }
                     } catch (e: Exception) {
                     }
@@ -178,7 +170,7 @@ class EmergentFragment : Fragment() {
         })
     }
 
-    private fun getData() {
+    private fun getData(token: String) {
         val map: HashMap<String?, Any?> = HashMap()
         map["phyId"] = id!!
         map["pageSize"] = PAGESIZE!!
@@ -187,9 +179,9 @@ class EmergentFragment : Fragment() {
 
 
         Log.e("data", map.toString())
-        val service: RetrofitServices =
-            RetrofitClient.createServiceWithToken(RetrofitServices::class.java)
-        val call = service.cases(map)
+        val apiService = RetrofitClient.getClientRetro().create(RetroServices::class.java)
+
+        val call = apiService.cases("bearer $token", map)
         call.enqueue(object : Callback<Cases> {
             override fun onResponse(
                 call: Call<Cases>,
@@ -205,7 +197,7 @@ class EmergentFragment : Fragment() {
                             progressBar!!.visibility = View.GONE
                             swipe!!.isRefreshing = false
 
-                        }else{
+                        } else {
                             progressBar!!.visibility = View.GONE
                             swipe!!.isRefreshing = false
                         }

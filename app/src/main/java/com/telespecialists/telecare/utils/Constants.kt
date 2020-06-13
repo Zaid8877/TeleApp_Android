@@ -4,7 +4,7 @@ object Constants {
     const val USER_NAME = "telecare-api-001"
     const val USER_PASSWORD = "dGVsZWNhcmUtYXBpLTAwMTpOYXRpb25hbCQwOnZjYTZ0MXkhdzdeZW4wdTg0eDNt"
     const val GRANT_TYPE = "password"
-    const val SAVED_TOKEN = "saved_token"
+    const val SAVED_TOKEN = "bearer_token"
 
     const val BASE_URL = "http://uat.strokealert911.com/"
     const val TOKEN_URL = "api/token"

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.telespecialists.telecare.utils.DateCellView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.telespecialists.telecare.utils.DateCellView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="@dimen/_30sdp"
     android:layout_height="@dimen/_30sdp">
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor="@color/colorPrimary"
-        android:id="@+id/id_cell_text"/>
+        android:id="@+id/id_cell_text" />
 </com.telespecialists.telecare.utils.DateCellView>

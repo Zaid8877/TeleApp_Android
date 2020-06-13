@@ -16,7 +16,8 @@ import com.telespecialists.telecare.data.Case
 import com.telespecialists.telecare.ui.activities.DetailsActivity
 import java.util.*
 
-internal class CasesAdapter(private val mCtx: Context, list: MutableList<Case>) : RecyclerView.Adapter<MyViewHolder>(),
+internal class CasesAdapter(private val mCtx: Context, list: MutableList<Case>) :
+    RecyclerView.Adapter<MyViewHolder>(),
     Filterable {
     private var list: MutableList<Case> = ArrayList()
     private var copylist: List<Case>? = null
@@ -72,7 +73,8 @@ internal class CasesAdapter(private val mCtx: Context, list: MutableList<Case>) 
                     for (item in copylist!!) {
                         if (item.caseNumber.toString().toLowerCase().contains(filterPattern) ||
                             item.facility.name.toLowerCase().contains(filterPattern) ||
-                            item.caseType.name.toLowerCase().contains(filterPattern)) {
+                            item.caseType.name.toLowerCase().contains(filterPattern)
+                        ) {
                             filteredList.add(item)
                         }
                     }
