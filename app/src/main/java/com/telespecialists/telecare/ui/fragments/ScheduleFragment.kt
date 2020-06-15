@@ -1,6 +1,7 @@
 package com.telespecialists.telecare.ui.fragments
 
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Color
 import android.net.Uri
@@ -10,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -30,8 +33,21 @@ import java.util.*
 class ScheduleFragment : Fragment(){
     private var npiNumber: String? = null
     private var mCtx: Context? = null
+    private var startTime: AppCompatTextView? = null
+    private var endTime: AppCompatTextView? = null
+    private var card: CardView? = null
     private lateinit var eventsCalendar: CompactCalendarView
+    private var progressDialog: ProgressDialog? = null
 
+    private fun progressDialog() {
+        try {
+            progressDialog = ProgressDialog(mCtx)
+            progressDialog!!.setMessage("Loading...")
+            progressDialog!!.setCanceledOnTouchOutside(false)
+            progressDialog!!.show()
+        } catch (e: Exception) {
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,8 +60,12 @@ class ScheduleFragment : Fragment(){
     ): View? {
         val v = inflater.inflate(R.layout.fragment_schedule, container, false)
         npiNumber = Prefs.getString(NPI_NUMBER, "0")
+        progressDialog()
         generateTokenxVolley()
         eventsCalendar = v.findViewById(R.id.compactcalendar_view)
+        startTime = v.findViewById(R.id.startTime)
+        endTime = v.findViewById(R.id.endTime)
+        card = v.findViewById(R.id.card)
 
         eventsCalendar.setUseThreeLetterAbbreviation(false);
 
@@ -133,7 +153,7 @@ class ScheduleFragment : Fragment(){
             val ev1 = Event(
                 Color.BLUE,
                 startDate,
-                "Event Description"
+                item.startTime + "," + item.endTime
             )
             eventsCalendar.addEvent(ev1)
            /* val ev2 = Event(
@@ -144,15 +164,43 @@ class ScheduleFragment : Fragment(){
             eventsCalendar.addEvent(ev2)*/
 
         }
+        try {
+            progressDialog!!.dismiss()
+        } catch (e: Exception) {
+        }
+
 
 
         eventsCalendar.setListener(object : CompactCalendarView.CompactCalendarViewListener {
             override fun onDayClick(dateClicked: Date) {
                 val events: List<Event> = eventsCalendar.getEvents(dateClicked)
-                events.forEach {i ->
-                    Toast.makeText(mCtx, "${i.timeInMillis}",Toast.LENGTH_LONG).show()
+                if (events.isNotEmpty()) {
+                    events.forEach {i ->
 
+                        val string = i.data.toString()
+                        val parts = string.split(",".toRegex()).toTypedArray()
+                        val first = parts[0]
+                        val last = parts[1]
+                        Log.e("first", first)
+                        val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+                        val date1: Date = dateFormat.parse(first) //You will get date object relative to server/client timezone wherever it is parsed
+                        Log.e("date1", ""+date1)
+
+                        val date2: Date = dateFormat.parse(last) //You will get date object relative to server/client timezone wherever it is parsed
+                        val formatter: DateFormat = SimpleDateFormat("hh:mm a") //If you need time just put specific format for time like 'HH:mm:ss'
+                        val dateStr: String = formatter.format(date1)
+                        Log.e("dateStr", ""+dateStr)
+                        val dateStr2: String = formatter.format(date2)
+
+                        startTime!!.text = "Start Time : $dateStr"
+                        endTime!!.text = "End Time : $dateStr2"
+                    }
                 }
+                else{
+                        startTime!!.text = "Start Time : No Schedule"
+                        endTime!!.text = "End Time : No Schedule"
+                    }
+
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date) {

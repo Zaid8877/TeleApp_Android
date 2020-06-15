@@ -17,10 +17,56 @@
         app:compactCalendarBackgroundColor="@color/white"
         app:compactCalendarTextColor="#000"
         app:compactCalendarEventIndicatorStyle="small_indicator"
-        app:compactCalendarCurrentSelectedDayBackgroundColor="@color/colorPrimary"
+        app:compactCalendarCurrentSelectedDayBackgroundColor="@color/yellow"
         app:compactCalendarCurrentDayBackgroundColor="@color/colorPrimary"
         app:compactCalendarMultiEventIndicatorColor="@color/colorPrimary"
         />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_below="@+id/compactcalendar_view"
+        android:layout_marginTop="8dp"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="@dimen/_4sdp"
+        app:cardElevation="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/startTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Start Time : "
+                android:fontFamily="@font/sofiapro"
+                android:textSize="@dimen/_14ssp"
+                android:gravity="center_vertical"/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/endTime"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="End Time : "
+                android:fontFamily="@font/sofiapro"
+                android:textSize="@dimen/_14ssp"
+                android:gravity="center_vertical"/>
+
+
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
 
 
 
