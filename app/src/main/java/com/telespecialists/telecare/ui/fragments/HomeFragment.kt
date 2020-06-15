@@ -1,6 +1,7 @@
 package com.telespecialists.telecare.ui.fragments
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,16 +16,21 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import com.pixplicity.easyprefs.library.Prefs
 import com.telespecialists.telecare.R
 import com.telespecialists.telecare.adapter.CasesAdapter
 import com.telespecialists.telecare.data.Case
 import com.telespecialists.telecare.data.Cases
+import com.telespecialists.telecare.data.Login
 import com.telespecialists.telecare.data.TokenX
 import com.telespecialists.telecare.retro.RetroServices
 import com.telespecialists.telecare.retro.RetrofitClient
 import com.telespecialists.telecare.utils.Constants
 import kotlinx.android.synthetic.main.fragment_layout.*
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -71,7 +77,7 @@ class HomeFragment : Fragment() {
         casesList!!.layoutManager = manager
         adapter = CasesAdapter(mContext!!, list)
         casesList!!.adapter = adapter
-        generateToken()
+        generateTokenxVolley()
         listerners()
         return v
     }
@@ -83,7 +89,7 @@ class HomeFragment : Fragment() {
             adapter!!.notifyDataSetChanged()
             swipe!!.isRefreshing = true
             SKIP = 0
-            generateToken()
+            generateTokenxVolley()
         }
 
         search!!.setOnClickListener {
@@ -115,113 +121,95 @@ class HomeFragment : Fragment() {
                     isScrolling = false
                     progressBar!!.visibility = View.VISIBLE
                     SKIP = SKIP!!.plus(PAGESIZE!!)
-                    generateToken()
+                    generateTokenxVolley()
                 }
             }
 
         })
     }
 
-    private fun generateToken() {
-        val map: HashMap<String, Any> = HashMap()
-        map["username"] = "telecare-api-001"
-        map["password"] = "dGVsZWNhcmUtYXBpLTAwMTpOYXRpb25hbCQwOnZjYTZ0MXkhdzdeZW4wdTg0eDNt"
-        map["grant_type"] = "password"
-        val apiService = RetrofitClient.getClientRetro().create(RetroServices::class.java)
 
-        val call = apiService.getToken(map)
-        call.enqueue(object : Callback<TokenX> {
-            override fun onResponse(
-                call: Call<TokenX>,
-                response: Response<TokenX>
-            ) {
-                if (response.isSuccessful) {
-                    try {
-                        val token = response.body()!!.accessToken
-                        if (token.isNotEmpty()) {
-                            //Prefs.putString("bearer_token", token)
-                            getData(token)
-                        }
-                    } catch (e: Exception) {
-                    }
-                } else {
-                    try {
-                        Log.e("token: ", "token failed")
-                    } catch (e: Exception) {
-                    }
+    private fun generateTokenxVolley() {
+        val myRequestQueue = Volley.newRequestQueue(mContext)
+        val url = "http://uat.strokealert911.com/api/token"
 
-                }
+        val myStringRequest = object :
+            StringRequest(
+                Method.POST, url,
+                com.android.volley.Response.Listener { response ->
+
+                    val obj = JSONObject(response)
+                    val token = obj.getString("access_token")
+                    Log.e("token", token)
+                    getDataVolley(token)
+                }, com.android.volley.Response.ErrorListener
+                { error ->
+                    Log.e("error", error.toString())
+                }) {
+            override fun getParams(): Map<String, String> {
+                val MyData: MutableMap<String, String> =
+                    HashMap()
+                MyData["username"] = Constants.USER_NAME
+                MyData["password"] = Constants.USER_PASSWORD
+                MyData["grant_type"] = Constants.GRANT_TYPE
+                return MyData
             }
-
-            override fun onFailure(call: Call<TokenX>, t: Throwable) {
-                try {
-                    Log.e("token: ", "token failed: " + t.message)
-                } catch (e: Exception) {
-                }
+        }
 
 
-            }
-        })
+        myRequestQueue.add(myStringRequest)
     }
+    private fun getDataVolley(token: String) {
+        val myRequestQueue = Volley.newRequestQueue(mContext)
+        val builder = Uri.Builder()
+        builder.scheme("http")
+            .authority("uat.strokealert911.com")
+            .appendPath("api")
+            .appendPath("cases")
+            .appendPath("list")
+            .appendPath("by-physicain")
+            .appendQueryParameter("phyId", id!!)
+            .appendQueryParameter("pageSize", PAGESIZE!!.toString())
+            .appendQueryParameter("skip", SKIP!!.toString())
 
-    private fun getData(token: String) {
-        val map: HashMap<String?, Any?> = HashMap()
-        map["phyId"] = id!!
-        map["pageSize"] = PAGESIZE!!
-        map["skip"] = SKIP!!
-
-        Log.e("data", map.toString())
-        val apiService = RetrofitClient.getClientRetro().create(RetroServices::class.java)
-
-        val call = apiService.cases("bearer $token", map)
-        call.enqueue(object : Callback<Cases> {
-            override fun onResponse(
-                call: Call<Cases>,
-                response: Response<Cases>
-            ) {
-                if (response.isSuccessful) {
-                    try {
-                        if (response.body() != null) {
-                            list.addAll(response.body()!!.cases)
-                            adapter!!.notifyDataSetChanged()
-                            progressBar!!.visibility = View.GONE
-                            swipe!!.isRefreshing = false
-
-                        } else {
-                            progressBar!!.visibility = View.GONE
-                            swipe!!.isRefreshing = false
-                        }
-                    } catch (e: Exception) {
+        val myUrl: String = builder.build().toString()
+        val myStringRequest = object :
+            StringRequest(
+                Method.GET, myUrl,
+                com.android.volley.Response.Listener { response ->
+                    val model: Cases = Gson().fromJson(response.toString(), Cases::class.java)
+                    list.addAll(model.cases)
+                    if (list.isNotEmpty()){
+                        adapter!!.notifyDataSetChanged()
+                        progressBar!!.visibility = View.GONE
+                        swipe!!.isRefreshing = false
+                    }else{
+                        Toast.makeText(mContext, "No data found", Toast.LENGTH_LONG).show()
                         progressBar!!.visibility = View.GONE
                         swipe!!.isRefreshing = false
                     }
 
-                } else {
-                    try {
-                        progressBar!!.visibility = View.GONE
-                        swipe!!.isRefreshing = false
-                        Toast.makeText(mContext, "No Data", Toast.LENGTH_LONG).show()
-                    } catch (e: Exception) {
-                    }
-                }
-            }
 
-            override fun onFailure(call: Call<Cases>, t: Throwable) {
-                try {
+                }, com.android.volley.Response.ErrorListener
+                { error ->
                     progressBar!!.visibility = View.GONE
                     swipe!!.isRefreshing = false
-                    Toast.makeText(
-                        mContext,
-                        "Failed: ${t.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } catch (e: Exception) {
-                }
+                    Toast.makeText(mContext, error.toString(), Toast.LENGTH_LONG).show()
+                }) {
 
-
+            override fun getHeaders(): MutableMap<String, String> {
+                val params: MutableMap<String, String> =
+                    HashMap()
+                params["Authorization"] = "bearer $token"
+                return params
             }
-        })
+        }
+
+
+        myRequestQueue.add(myStringRequest)
+
     }
+
 
 
 }

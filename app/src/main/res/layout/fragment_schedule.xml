@@ -2,7 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+        android:id="@+id/compactcalendar_view"
+        android:layout_width="fill_parent"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_height="250dp"
+        app:compactCalendarTextSize="12sp"
+        app:compactCalendarCurrentDayTextColor="@color/white"
+        app:compactCalendarCurrentSelectedDayTextColor="@color/white"
+        app:compactCalendarBackgroundColor="@color/white"
+        app:compactCalendarTextColor="#000"
+        app:compactCalendarEventIndicatorStyle="small_indicator"
+        app:compactCalendarCurrentSelectedDayBackgroundColor="@color/colorPrimary"
+        app:compactCalendarCurrentDayBackgroundColor="@color/colorPrimary"
+        app:compactCalendarMultiEventIndicatorColor="@color/colorPrimary"
+        />
 
 
 

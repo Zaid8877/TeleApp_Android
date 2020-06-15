@@ -2,22 +2,22 @@ package com.telespecialists.telecare.ui.activities
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
 import com.pixplicity.easyprefs.library.Prefs
 import com.telespecialists.telecare.R
 import com.telespecialists.telecare.data.Login
-import com.telespecialists.telecare.data.TokenX
-import com.telespecialists.telecare.retro.RetroClient
-import com.telespecialists.telecare.retro.RetroServices
 import com.telespecialists.telecare.utils.Constants
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
@@ -28,11 +28,11 @@ class LoginActivity : AppCompatActivity() {
     private var email: String? = null
     private var password: String? = null
     private var progressDialog: ProgressDialog? = null
+    private var data: Login? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //val id = "df79577f-3d6c-40f2-a752-85dc1ce21ca1"
         val id = Prefs.getString(Constants.ID, "0")
         if (id != "0") {
             try {
@@ -69,7 +69,11 @@ class LoginActivity : AppCompatActivity() {
                 userPassword.error = "Enter email address!"
             }
             else -> {
-                generateTokenxVolley()
+                try {
+                    progressDialog!!.show()
+                    generateTokenxVolley()
+                } catch (e: Exception) {
+                }
             }
         }
     }
@@ -106,24 +110,28 @@ class LoginActivity : AppCompatActivity() {
 
     private fun postDataVolley(token: String) {
         val myRequestQueue = Volley.newRequestQueue(this)
-        val url = "http://uat.strokealert911.com/api/physician/Auth"
+        val builder = Uri.Builder()
+        builder.scheme("http")
+            .authority("uat.strokealert911.com")
+            .appendPath("api")
+            .appendPath("physician")
+            .appendPath("Auth")
+            .appendQueryParameter("user_name", email!!)
+            .appendQueryParameter("password", password!!)
 
+        val myUrl: String = builder.build().toString()
         val myStringRequest = object :
-            StringRequest(Method.POST, url,
+            StringRequest(Method.POST, myUrl,
                 Response.Listener { response ->
-                    Log.e("error", response.toString())
+                    val model: Login = Gson().fromJson(response.toString(), Login::class.java)
+                    saveData(model)
+                    progressDialog!!.dismiss()
 
                 }, Response.ErrorListener
                 { error ->
-                    Log.e("error", "" + error.toString())
+                        progressDialog!!.dismiss()
+                        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
                 }) {
-            override fun getParams(): Map<String, String> {
-                val MyData: MutableMap<String, String> =
-                    HashMap()
-                MyData["user_name"] = email!!
-                MyData["password"] = password!!
-                return MyData
-            }
 
             override fun getHeaders(): MutableMap<String, String> {
                 val params: MutableMap<String, String> =
@@ -138,86 +146,15 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun generateTokenxRetrofit() {
-        val map: HashMap<String, Any> = HashMap()
-        map["username"] = "telecare-api-001"
-        map["password"] = "dGVsZWNhcmUtYXBpLTAwMTpOYXRpb25hbCQwOnZjYTZ0MXkhdzdeZW4wdTg0eDNt"
-        map["grant_type"] = "password"
-        Log.e("map", map.toString())
-        val service: RetroServices =
-            RetroClient.createService(RetroServices::class.java)
-
-        val call = service.getToken(map)
-        call.enqueue(object : retrofit2.Callback<TokenX> {
-            override fun onResponse(
-                call: retrofit2.Call<TokenX>,
-                response: retrofit2.Response<TokenX>
-            ) {
-                if (response.isSuccessful) {
-                    try {
-                        val token = response.body()!!.accessToken
-                        if (token.isNotEmpty()) {
-                            Prefs.putString(Constants.SAVED_TOKEN, token)
-                            postData()
-                        }
-                    } catch (e: Exception) {
-                    }
-                } else {
-                    try {
-                        Log.e("token: ", "token failed")
-                    } catch (e: Exception) {
-                    }
-
-                }
-            }
-
-            override fun onFailure(call: retrofit2.Call<TokenX>, t: Throwable) {
-                try {
-                    Log.e("token: ", "token failed: " + t.message)
-                } catch (e: Exception) {
-                }
-
-
-            }
-        })
-    }
-
-    private fun postData() {
-        val map: HashMap<String, Any> = HashMap()
-        map["user_name"] = email!!
-        map["password"] = password!!
-        val service: RetroServices =
-            RetroClient.createServiceWithToken(RetroServices::class.java)
-
-        val call = service.login(map)
-        call.enqueue(object : retrofit2.Callback<Login> {
-            override fun onResponse(
-                call: retrofit2.Call<Login>,
-                response: retrofit2.Response<Login>
-            ) {
-                if (response.isSuccessful) {
-                    try {
-                        Log.e("data", response.toString())
-                    } catch (e: Exception) {
-                    }
-                } else {
-                    try {
-                        Log.e("token: ", "token failed")
-                    } catch (e: Exception) {
-                    }
-
-                }
-            }
-
-            override fun onFailure(call: retrofit2.Call<Login>, t: Throwable) {
-                try {
-                    Log.e("token: ", "token failed: " + t.message)
-                } catch (e: Exception) {
-                }
-
-
-            }
-        })
+    private fun saveData(model: Login) {
+        try {
+            Prefs.putString(Constants.ID, model.id)
+            Prefs.putString(Constants.NPI_NUMBER, model.nPINumber)
+            val i = Intent(this, MainActivity::class.java)
+            startActivity(i)
+            finish()
+        } catch (e: Exception) {
+        }
     }
 
 

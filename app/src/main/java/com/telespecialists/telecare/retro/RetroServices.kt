@@ -15,7 +15,7 @@ interface RetroServices {
     @FormUrlEncoded
     fun getToken(@FieldMap map: HashMap<String, Any>): Call<TokenX>
 
-    @POST(Constants.LOGIN_URL)
+    @GET(Constants.LOGIN_URL)
     fun login(@QueryMap map: HashMap<String, Any>): Call<Login>
 
 
