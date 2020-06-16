@@ -13,5 +13,6 @@ object Constants {
     const val CASES_BY_PHYS_SCH = "api/physician/schedule"
 
     const val ID = "phys_id"
+    const val PHYS_NAME = "phys_name"
     const val NPI_NUMBER = "nPINumber"
 }

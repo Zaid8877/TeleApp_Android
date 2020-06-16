@@ -129,8 +129,8 @@ class LoginActivity : AppCompatActivity() {
 
                 }, Response.ErrorListener
                 { error ->
-                        progressDialog!!.dismiss()
-                        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
+                    progressDialog!!.dismiss()
+                    Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
                 }) {
 
             override fun getHeaders(): MutableMap<String, String> {
@@ -150,6 +150,7 @@ class LoginActivity : AppCompatActivity() {
         try {
             Prefs.putString(Constants.ID, model.id)
             Prefs.putString(Constants.NPI_NUMBER, model.nPINumber)
+            Prefs.putString(Constants.PHYS_NAME, model.firstName + " " + model.lastName)
             val i = Intent(this, MainActivity::class.java)
             startActivity(i)
             finish()

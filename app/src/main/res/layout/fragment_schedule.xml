@@ -2,31 +2,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_width="match_parent">
 
-    <com.github.sundeepk.compactcalendarview.CompactCalendarView
-        android:id="@+id/compactcalendar_view"
-        android:layout_width="fill_parent"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
-        android:layout_height="250dp"
-        app:compactCalendarTextSize="12sp"
-        app:compactCalendarCurrentDayTextColor="@color/white"
-        app:compactCalendarCurrentSelectedDayTextColor="@color/white"
-        app:compactCalendarBackgroundColor="@color/white"
-        app:compactCalendarTextColor="#000"
-        app:compactCalendarEventIndicatorStyle="small_indicator"
-        app:compactCalendarCurrentSelectedDayBackgroundColor="@color/yellow"
-        app:compactCalendarCurrentDayBackgroundColor="@color/colorPrimary"
-        app:compactCalendarMultiEventIndicatorColor="@color/colorPrimary"
-        />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/calenderCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="@dimen/_4sdp"
+        app:cardElevation="@dimen/_2sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/calenderHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/sofiapro"
+                android:textStyle="bold"
+                android:textSize="@dimen/_14ssp"
+                android:gravity="center_horizontal" />
+
+            <com.github.sundeepk.compactcalendarview.CompactCalendarView
+                android:id="@+id/compactcalendar_view"
+                android:layout_width="fill_parent"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                android:layout_height="250dp"
+                app:compactCalendarTextSize="12sp"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:compactCalendarCurrentDayTextColor="@color/white"
+                app:compactCalendarCurrentSelectedDayTextColor="@color/white"
+                app:compactCalendarBackgroundColor="@color/white"
+                app:compactCalendarTextColor="#000"
+                app:compactCalendarEventIndicatorStyle="small_indicator"
+                app:compactCalendarCurrentSelectedDayBackgroundColor="@color/colorPrimaryDark"
+                app:compactCalendarCurrentDayBackgroundColor="@color/colorPrimary"
+                app:compactCalendarMultiEventIndicatorColor="@color/colorPrimary" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_100sdp"
-        android:layout_below="@+id/compactcalendar_view"
+        android:layout_below="@+id/calenderCard"
         android:layout_marginTop="8dp"
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="@dimen/_4sdp"
@@ -48,7 +78,7 @@
                 android:text="Start Time : "
                 android:fontFamily="@font/sofiapro"
                 android:textSize="@dimen/_14ssp"
-                android:gravity="center_vertical"/>
+                android:gravity="center_vertical" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -59,15 +89,13 @@
                 android:text="End Time : "
                 android:fontFamily="@font/sofiapro"
                 android:textSize="@dimen/_14ssp"
-                android:gravity="center_vertical"/>
-
+                android:gravity="center_vertical" />
 
 
         </LinearLayout>
 
 
     </androidx.cardview.widget.CardView>
-
 
 
 </RelativeLayout>

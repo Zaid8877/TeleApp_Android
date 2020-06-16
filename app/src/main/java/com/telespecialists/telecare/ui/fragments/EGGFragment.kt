@@ -121,6 +121,7 @@ class EGGFragment : Fragment() {
 
         })
     }
+
     private fun generateTokenxVolley() {
         val myRequestQueue = Volley.newRequestQueue(mContext)
         val url = "http://uat.strokealert911.com/api/token"
@@ -151,6 +152,7 @@ class EGGFragment : Fragment() {
 
         myRequestQueue.add(myStringRequest)
     }
+
     private fun getDataVolley(token: String) {
         val myRequestQueue = Volley.newRequestQueue(mContext)
         val builder = Uri.Builder()
@@ -172,11 +174,11 @@ class EGGFragment : Fragment() {
                 com.android.volley.Response.Listener { response ->
                     val model: Cases = Gson().fromJson(response.toString(), Cases::class.java)
                     list.addAll(model.cases)
-                    if (list.isNotEmpty()){
+                    if (list.isNotEmpty()) {
                         adapter!!.notifyDataSetChanged()
                         progressBar!!.visibility = View.GONE
                         swipe!!.isRefreshing = false
-                    }else{
+                    } else {
                         Toast.makeText(mContext, "No data found", Toast.LENGTH_LONG).show()
                         progressBar!!.visibility = View.GONE
                         swipe!!.isRefreshing = false

@@ -24,15 +24,9 @@ import com.telespecialists.telecare.R
 import com.telespecialists.telecare.adapter.CasesAdapter
 import com.telespecialists.telecare.data.Case
 import com.telespecialists.telecare.data.Cases
-import com.telespecialists.telecare.data.TokenX
-import com.telespecialists.telecare.retro.RetroServices
-import com.telespecialists.telecare.retro.RetrofitClient
 import com.telespecialists.telecare.utils.Constants
 import kotlinx.android.synthetic.main.fragment_layout.*
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * A simple [Fragment] subclass.
@@ -127,6 +121,7 @@ class RoutineFragment : Fragment() {
 
         })
     }
+
     private fun generateTokenxVolley() {
         val myRequestQueue = Volley.newRequestQueue(mContext)
         val url = "http://uat.strokealert911.com/api/token"
@@ -157,6 +152,7 @@ class RoutineFragment : Fragment() {
 
         myRequestQueue.add(myStringRequest)
     }
+
     private fun getDataVolley(token: String) {
         val myRequestQueue = Volley.newRequestQueue(mContext)
         val builder = Uri.Builder()
@@ -178,11 +174,11 @@ class RoutineFragment : Fragment() {
                 com.android.volley.Response.Listener { response ->
                     val model: Cases = Gson().fromJson(response.toString(), Cases::class.java)
                     list.addAll(model.cases)
-                    if (list.isNotEmpty()){
+                    if (list.isNotEmpty()) {
                         adapter!!.notifyDataSetChanged()
                         progressBar!!.visibility = View.GONE
                         swipe!!.isRefreshing = false
-                    }else{
+                    } else {
                         Toast.makeText(mContext, "No data found", Toast.LENGTH_LONG).show()
                         progressBar!!.visibility = View.GONE
                         swipe!!.isRefreshing = false

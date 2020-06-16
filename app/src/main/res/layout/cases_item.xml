@@ -14,13 +14,14 @@
         android:padding="@dimen/_16sdp">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/mainTitle"
+            android:id="@+id/tagTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Regional Medica Center"
-            android:textSize="@dimen/_12sdp"
+            android:text="Stroke Alert"
+            android:textSize="@dimen/_14sdp"
             android:textColor="@color/colorPrimary"
             android:fontFamily="@font/sofiapro"
+            android:textStyle="bold"
             android:layout_marginEnd="@dimen/_8sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/statusBtn"
@@ -31,40 +32,44 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Regional Medica Center"
-            android:textSize="@dimen/_8sdp"
+            android:textSize="@dimen/_12sdp"
             android:textColor="@color/colorPrimary"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textStyle="bold"
             android:fontFamily="@font/sofiapro"
-            app:layout_constraintEnd_toEndOf="@+id/mainTitle"
+            app:layout_constraintEnd_toEndOf="@+id/tagTitle"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mainTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tagTitle"
             android:layout_marginTop="@dimen/_4sdp" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tagTitle"
+            android:id="@+id/mainTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Stroke Alert"
-            android:textSize="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="@+id/mainTitle"
+            android:text="Case Number"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintEnd_toEndOf="@+id/miniTitle"
             android:fontFamily="@font/sofiapro"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/miniTitle"
-            android:layout_marginTop="@dimen/_16sdp" />
+            android:layout_marginTop="@dimen/_4sdp" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/statusBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="Accepted"
             android:textColor="@color/white"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/_16sdp"
-            android:paddingEnd="@dimen/_16sdp"
-            android:drawablePadding="@dimen/_20sdp"
+            android:gravity="center"
+            android:paddingStart="@dimen/_6sdp"
+            android:paddingEnd="@dimen/_6sdp"
+            android:paddingTop="@dimen/_6sdp"
+            android:paddingBottom="@dimen/_6sdp"
             android:background="@drawable/btn2_bg" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
