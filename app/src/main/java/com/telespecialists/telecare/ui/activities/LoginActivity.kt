@@ -146,6 +146,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+
     private fun saveData(model: Login) {
         try {
             Prefs.putString(Constants.ID, model.id)

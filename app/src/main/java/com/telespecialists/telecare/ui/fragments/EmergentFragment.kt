@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
@@ -179,7 +178,6 @@ class EmergentFragment : Fragment() {
                         progressBar!!.visibility = View.GONE
                         swipe!!.isRefreshing = false
                     } else {
-                        Toast.makeText(mContext, "No data found", Toast.LENGTH_LONG).show()
                         progressBar!!.visibility = View.GONE
                         swipe!!.isRefreshing = false
                     }
@@ -189,7 +187,6 @@ class EmergentFragment : Fragment() {
                 { error ->
                     progressBar!!.visibility = View.GONE
                     swipe!!.isRefreshing = false
-                    Toast.makeText(mContext, error.toString(), Toast.LENGTH_LONG).show()
                 }) {
 
             override fun getHeaders(): MutableMap<String, String> {

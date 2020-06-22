@@ -48,7 +48,6 @@
             android:id="@+id/toolbarTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/cases_details"
             android:textColor="@color/white"
             android:fontFamily="@font/sofiapro"
             android:textSize="@dimen/_15ssp"
@@ -63,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/search"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginEnd="@dimen/_16sdp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true" />
@@ -99,35 +98,54 @@
                 android:gravity="center">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cas_patient"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Test"
                     android:textColor="@color/white"
                     android:gravity="center"
                     android:fontFamily="@font/sofiapro"
-                    android:textSize="@dimen/_15ssp" />
+                    android:textSize="@dimen/_12ssp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/cas_billing_dob2"
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="50M"
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:fontFamily="@font/sofiapro"
-                    android:textSize="@dimen/_24ssp" />
+                    android:textSize="@dimen/_14ssp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="02/12/1970\nCSN111"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:fontFamily="@font/sofiapro"
-                    android:textSize="@dimen/_12ssp" />
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/cas_billing_dob"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/sofiapro"
+                        android:textSize="@dimen/_10ssp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/cas_identification_type"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:fontFamily="@font/sofiapro"
+                        android:textSize="@dimen/_10ssp" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -198,13 +216,13 @@
                     app:cardUseCompatPadding="true">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/cas_cart"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/_16sdp"
                         android:paddingEnd="@dimen/_16sdp"
                         android:paddingTop="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_8sdp"
-                        android:text="1"
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textColor="@color/colorPrimary"
@@ -249,9 +267,8 @@
                             android:fontFamily="@font/sofiapro" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/medicineName"
+                            android:id="@+id/fac_name"
                             android:layout_weight="1"
-                            android:text="Yuma Regional Medical"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_12ssp"
@@ -274,9 +291,8 @@
                             android:fontFamily="@font/sofiapro" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/desc"
+                            android:id="@+id/facTime"
                             android:layout_weight="1"
-                            android:text="Time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_12ssp"
@@ -299,8 +315,8 @@
                             android:fontFamily="@font/sofiapro" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/cas_response_ts_notification"
                             android:layout_weight="1"
-                            android:text="Time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_12ssp"
@@ -323,8 +339,8 @@
                             android:fontFamily="@font/sofiapro" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/cas_metric_door_time_est"
                             android:layout_weight="1"
-                            android:text="Time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_12ssp"
@@ -369,8 +385,8 @@
                             android:fontFamily="@font/sofiapro" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/PhysicianName"
                             android:layout_weight="1"
-                            android:text="Adam Heller"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_12ssp"
@@ -393,8 +409,8 @@
                             android:fontFamily="@font/sofiapro" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/cas_created_by_name"
                             android:layout_weight="1"
-                            android:text="Super Admin"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_12ssp"
@@ -417,8 +433,8 @@
                             android:fontFamily="@font/sofiapro" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/cas_case_number2"
                             android:layout_weight="1"
-                            android:text="12345"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/_12ssp"
@@ -439,6 +455,7 @@
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_16sdp"
                 android:text="Hospital info"
+                android:visibility="gone"
                 android:textColor="@color/white"
                 android:fontFamily="@font/sofiapro"
                 android:gravity="center" />
@@ -465,7 +482,7 @@
                 app:layout_constraintStart_toStartOf="@id/topheader"
                 android:background="@drawable/btn2_bg"
                 android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_16sdp"
                 android:text="Call Back"
                 android:textColor="@color/white"
                 android:fontFamily="@font/sofiapro"
@@ -481,6 +498,7 @@
                 android:layout_marginEnd="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:text="Radiolgy"
+                android:visibility="gone"
                 android:textColor="@color/white"
                 android:fontFamily="@font/sofiapro"
                 android:gravity="center" />
@@ -495,6 +513,7 @@
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:text="ED Main"
+                android:visibility="gone"
                 android:textColor="@color/white"
                 android:fontFamily="@font/sofiapro"
                 android:gravity="center" />

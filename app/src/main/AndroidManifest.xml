@@ -18,7 +18,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning, LockedOrientationActivity"
         tools:targetApi="q">
-
+        <activity
+            android:name=".ui.activities.MailDetailsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.DetailsActivity"
             android:screenOrientation="portrait" />

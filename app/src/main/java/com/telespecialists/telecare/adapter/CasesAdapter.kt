@@ -37,7 +37,7 @@ internal class CasesAdapter(private val mCtx: Context, list: MutableList<Case>) 
         holder.statusBtn.text = cases.caseStatus.name
         holder.itemView.setOnClickListener {
             val i = Intent(mCtx, DetailsActivity::class.java)
-            i.putExtra("id", cases.id)
+            i.putExtra("id", cases.id.toString())
             mCtx.startActivity(i)
         }
     }

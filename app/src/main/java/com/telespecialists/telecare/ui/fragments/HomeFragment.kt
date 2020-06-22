@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
@@ -19,23 +18,21 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
-import com.pixplicity.easyprefs.library.Prefs
 import com.telespecialists.telecare.R
-import com.telespecialists.telecare.adapter.CasesAdapter
-import com.telespecialists.telecare.data.Case
-import com.telespecialists.telecare.data.Cases
+import com.telespecialists.telecare.adapter.RapidMailAdapter
+import com.telespecialists.telecare.data.CaseX
+import com.telespecialists.telecare.data.RapidMails
 import com.telespecialists.telecare.utils.Constants
 import kotlinx.android.synthetic.main.fragment_layout.*
 import org.json.JSONObject
 
 
 class HomeFragment : Fragment() {
-    private var id: String? = null
     private var mContext: Context? = null
     private var casesList: RecyclerView? = null
     private var search: AppCompatImageView? = null
     private var seachBar: AppCompatEditText? = null
-    private var adapter: CasesAdapter? = null
+    private var adapter: RapidMailAdapter? = null
     private var isScrolling: Boolean? = false
     private var currentItems: Int? = null
     private var totalItems: Int? = null
@@ -43,7 +40,7 @@ class HomeFragment : Fragment() {
     private var manager: LinearLayoutManager? = null
     private var progressBar: ProgressBar? = null
     private var swipe: SwipeRefreshLayout? = null
-    private var list: MutableList<Case> = ArrayList()
+    private var list: MutableList<CaseX> = ArrayList()
 
     private var PAGESIZE: Int? = 10
     private var SKIP: Int? = 0
@@ -59,7 +56,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_layout, container, false)
-        id = Prefs.getString(Constants.ID, "")
         casesList = v.findViewById(R.id.casesList)
         search = v.findViewById(R.id.search)
         seachBar = v.findViewById(R.id.seachBar)
@@ -68,7 +64,7 @@ class HomeFragment : Fragment() {
         progressBar = v.findViewById(R.id.progressBar)
         manager = LinearLayoutManager(mContext)
         casesList!!.layoutManager = manager
-        adapter = CasesAdapter(mContext!!, list)
+        adapter = RapidMailAdapter(mContext!!, list)
         casesList!!.adapter = adapter
         generateTokenxVolley()
         listerners()
@@ -159,10 +155,9 @@ class HomeFragment : Fragment() {
         builder.scheme("http")
             .authority("uat.strokealert911.com")
             .appendPath("api")
-            .appendPath("cases")
+            .appendPath("RapidsMails")
             .appendPath("list")
-            .appendPath("by-physicain")
-            .appendQueryParameter("phyId", id!!)
+            .appendPath("RapidsMails")
             .appendQueryParameter("pageSize", PAGESIZE!!.toString())
             .appendQueryParameter("skip", SKIP!!.toString())
 
@@ -171,14 +166,14 @@ class HomeFragment : Fragment() {
             StringRequest(
                 Method.GET, myUrl,
                 com.android.volley.Response.Listener { response ->
-                    val model: Cases = Gson().fromJson(response.toString(), Cases::class.java)
+                    val model: RapidMails =
+                        Gson().fromJson(response.toString(), RapidMails::class.java)
                     list.addAll(model.cases)
                     if (list.isNotEmpty()) {
                         adapter!!.notifyDataSetChanged()
                         progressBar!!.visibility = View.GONE
                         swipe!!.isRefreshing = false
                     } else {
-                        Toast.makeText(mContext, "No data found", Toast.LENGTH_LONG).show()
                         progressBar!!.visibility = View.GONE
                         swipe!!.isRefreshing = false
                     }
@@ -188,7 +183,6 @@ class HomeFragment : Fragment() {
                 { error ->
                     progressBar!!.visibility = View.GONE
                     swipe!!.isRefreshing = false
-                    Toast.makeText(mContext, error.toString(), Toast.LENGTH_LONG).show()
                 }) {
 
             override fun getHeaders(): MutableMap<String, String> {
