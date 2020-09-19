@@ -38,6 +38,7 @@ internal class CasesAdapter(private val mCtx: Context, list: MutableList<Case>) 
         holder.itemView.setOnClickListener {
             val i = Intent(mCtx, DetailsActivity::class.java)
             i.putExtra("id", cases.id.toString())
+            i.putExtra("case_type", cases.caseType.name)
             mCtx.startActivity(i)
         }
     }

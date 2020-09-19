@@ -25,6 +25,8 @@ import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
 
+    //email : mmasud@tstelemed.com
+    //password : Welcome@1
     private var email: String? = null
     private var password: String? = null
     private var progressDialog: ProgressDialog? = null

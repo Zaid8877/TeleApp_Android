@@ -22,12 +22,17 @@ import kotlin.collections.HashMap
 
 class DetailsActivity : AppCompatActivity() {
     private var id: String? = null
+    private var caseType: String? = null
     private var progressDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
         id = intent.getStringExtra("id")
+        caseType = intent.getStringExtra("case_type")
+        case_type_tv.text = caseType
+        case_type_tv.isSelected = true
+
         back.setOnClickListener {
             finish()
         }
@@ -113,33 +118,77 @@ class DetailsActivity : AppCompatActivity() {
         myRequestQueue.add(myStringRequest)
     }
 
+    private fun getAge(year: Int, month: Int, day: Int): String? {
+        val dob = Calendar.getInstance()
+        val today = Calendar.getInstance()
+        dob[year, month] = day
+        var age = today[Calendar.YEAR] - dob[Calendar.YEAR]
+        if (today[Calendar.DAY_OF_YEAR] < dob[Calendar.DAY_OF_YEAR]) {
+            age--
+        }
+        val ageInt = age
+        return ageInt.toString()
+    }
+
     private fun updateUI(model: CaseDetails?) {
         if (model != null) {
+            Log.e("model", "" + model.toString())
+
             try {
                 val currentTime = Calendar.getInstance().time
                 val dateFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                 val date1: Date = dateFormat.parse(model!!.casResponseTsNotification)
                 val date2: Date = dateFormat.parse(model!!.casMetricDoorTimeEst)
                 val date3: Date = dateFormat.parse(model!!.casBillingDob)
-                val formatter: DateFormat = SimpleDateFormat("dd/MM/yyyy")
+                val formatter: DateFormat = SimpleDateFormat("MMM d, yyyy h:mm a")
+                val formatter2: DateFormat = SimpleDateFormat("MMM d, yyyy")
                 val dateStr1: String = formatter.format(date1)
                 val dateStr2: String = formatter.format(date2)
-                val dateStr3: String = formatter.format(date3)
+                val dateStr3: String = formatter2.format(date3)
                 val dateStr4: String = formatter.format(currentTime)
 
-                toolbarTitle.text = "Case# ${model!!.casCaseNumber.toString()}"
+                //toolbarTitle.text = "Case# ${model!!.casCaseNumber.toString()}"
                 cas_patient.text = model.casPatient
+                cas_patient.isSelected = true
+
                 cas_identification_type.text = model.casIdentificationNumber
+                cas_identification_type.isSelected = true
+
                 cas_billing_dob.text = dateStr3
+                cas_billing_dob.isSelected = true
+
                 cas_cart.text = model.casCart
+                cas_cart.isSelected = true
+
                 fac_name.text = model.facName
+                fac_name.isSelected = true
+
                 cas_response_ts_notification.text = dateStr1
+                cas_response_ts_notification.isSelected = true
+
                 cas_metric_door_time_est.text = dateStr2
+                cas_metric_door_time_est.isSelected = true
+
                 PhysicianName.text = model.physicianName
+                PhysicianName.isSelected = true
+
                 cas_case_number2.text = model.casCaseNumber.toString()
+                cas_case_number2.isSelected = true
+
                 cas_created_by_name.text = model.casCreatedByName
-                cas_billing_dob2.text = dateStr3
+                val yearFormat: DateFormat = SimpleDateFormat("yyyy")
+                val monthFormat: DateFormat = SimpleDateFormat("MM")
+                val dayFormat: DateFormat = SimpleDateFormat("dd")
+
+                val y: Int = yearFormat.format(date3).toInt()
+                val m: Int = monthFormat.format(date3).toInt()
+                val d: Int = dayFormat.format(date3).toInt()
+                cas_billing_dob2.text = "${getAge(y, m, d)} ${model.casMetricPatientGender}"
+                cas_billing_dob2.isSelected = true
+
                 facTime.text = dateStr4
+                facTime.isSelected = true
+
                 progressDialog!!.hide()
 
                 btn3.setOnClickListener {
@@ -147,12 +196,13 @@ class DetailsActivity : AppCompatActivity() {
                     intent.putExtra("casex", model.casCallback)
                     startActivity(intent)
                 }
-                btn2.setOnClickListener {
+                /*btn2.setOnClickListener {
                     val intent = Intent(this, MailDetailsActivity::class.java)
                     intent.putExtra("casex", model.facEmr)
                     startActivity(intent)
-                }
+                }*/
             } catch (e: Exception) {
+                Log.e("e", e.toString())
             }
         }
 

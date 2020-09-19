@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.ProgressBar
+import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
@@ -28,6 +29,7 @@ import org.json.JSONObject
 
 
 class HomeFragment : Fragment() {
+    private var appBar: RelativeLayout? = null
     private var mContext: Context? = null
     private var casesList: RecyclerView? = null
     private var search: AppCompatImageView? = null
@@ -41,7 +43,6 @@ class HomeFragment : Fragment() {
     private var progressBar: ProgressBar? = null
     private var swipe: SwipeRefreshLayout? = null
     private var list: MutableList<CaseX> = ArrayList()
-
     private var PAGESIZE: Int? = 10
     private var SKIP: Int? = 0
 
@@ -56,6 +57,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.fragment_layout, container, false)
+        appBar = v.findViewById(R.id.appBar)
+        appBar!!.visibility = View.GONE
         casesList = v.findViewById(R.id.casesList)
         search = v.findViewById(R.id.search)
         seachBar = v.findViewById(R.id.seachBar)
@@ -72,7 +75,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun listerners() {
-
         swipe!!.setOnRefreshListener {
             list.clear()
             adapter!!.notifyDataSetChanged()
